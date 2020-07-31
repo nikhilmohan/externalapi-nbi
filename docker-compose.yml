@@ -17,7 +17,7 @@
 version: "2.1"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:4.0
     restart: always
     volumes:
       - /var/lib/mongo
@@ -35,7 +35,7 @@ services:
       MYSQL_USER: rene
   # APP  ***************************************************************************************
   nbi:
-    image: ${NEXUS_DOCKER_REPO}/onap/externalapi/nbi:${DOCKER_IMAGE_VERSION:-latest}
+    build: .
     ports:
       - 8080:8080
     env_file:
