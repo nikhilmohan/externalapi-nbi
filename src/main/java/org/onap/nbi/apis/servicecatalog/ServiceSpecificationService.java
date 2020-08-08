@@ -17,13 +17,15 @@ package org.onap.nbi.apis.servicecatalog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.onap.nbi.apis.servicecatalog.jolt.FindServiceSpecJsonTransformer;
 import org.onap.nbi.apis.servicecatalog.jolt.GetServiceSpecJsonTransformer;
+import org.onap.nbi.apis.servicecatalog.jolt.PostServiceSpecJsonTransformer;
+import org.onap.nbi.apis.servicecatalog.model.ServiceSpecCharacteristicRequest;
+import org.onap.nbi.apis.servicecatalog.model.ServiceSpecificationRequest;
 import org.onap.nbi.apis.serviceorder.ServiceCatalogUrl;
 import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.slf4j.Logger;
@@ -44,6 +46,9 @@ public class ServiceSpecificationService {
 
     @Autowired
     FindServiceSpecJsonTransformer findServiceSpecJsonTransformer;
+
+    @Autowired
+    PostServiceSpecJsonTransformer postServiceSpecJsonTransformer;
 
     @Autowired
     ToscaInfosProcessor toscaInfosProcessor;
@@ -101,4 +106,29 @@ public class ServiceSpecificationService {
             return null;
         }
     }
+
+    public Map create(String userId, ServiceSpecificationRequest specRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        LinkedHashMap specRequestMap = mapper.convertValue(specRequest, LinkedHashMap.class);
+        HashMap<Object, Object> serviceCatalogInput = (HashMap) postServiceSpecJsonTransformer.transform(specRequestMap);
+
+        ArrayList<Map<String, String>> propList = (ArrayList)(serviceCatalogInput.get("properties"));
+        propList.stream().map(prop -> (Map<String, String>) prop).forEach((propMap) -> {
+            ServiceSpecCharacteristicRequest characteristicRequest =
+                    specRequest.getServiceSpecCharacteristic()
+                            .stream()
+                            .filter(serviceSpecCharRequest -> propMap.get("name")
+                                    .equalsIgnoreCase(serviceSpecCharRequest.getName()))
+                            .findAny().get();
+            propMap.put("value", characteristicRequest
+                    .getServiceSpecCharacteristicValue()
+                    .stream()
+                    .findFirst().get().getValue());
+
+        });
+        //Call SDC Post API
+
+        return serviceCatalogInput;
+    }
+
 }

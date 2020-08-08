@@ -16,22 +16,18 @@
 
 package org.onap.nbi.apis.servicecatalog;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
+import java.util.*;
+
 import org.onap.nbi.OnapComponentsUrlPaths;
+import org.onap.nbi.apis.servicecatalog.model.ServiceSpecificationRequest;
 import org.onap.nbi.commons.JsonRepresentation;
 import org.onap.nbi.commons.ResourceManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(OnapComponentsUrlPaths.SERVICE_SPECIFICATION_PATH)
@@ -76,6 +72,16 @@ public class ServiceSpecificationResource extends ResourceManagement {
         String response = serviceSpecificationService.getInputSchema(serviceSpecId);
         JsonRepresentation filter = new JsonRepresentation(params);
         return this.getResponse(response, filter);
+    }
+    @PostMapping(value = "/serviceSpecification", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
+                                    @RequestBody ServiceSpecificationRequest serviceSpecificationRequest)   {
+        Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
+
+        // need to transform SDC response to ServiceSpecificationResponse
+
+        return ResponseEntity.created(URI.create("/")).body(serviceCatalogResponse);
     }
 
 }
