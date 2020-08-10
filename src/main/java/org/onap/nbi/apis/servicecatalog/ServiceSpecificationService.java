@@ -127,8 +127,11 @@ public class ServiceSpecificationService {
 
         });
         //Call SDC Post API
-
-        return serviceCatalogInput;
+        Map sdcResponse = sdcClient.callPost(serviceCatalogInput,userId);
+        
+        //Transform SDC Response
+        
+        return sdcResponse;
     }
 
 }
