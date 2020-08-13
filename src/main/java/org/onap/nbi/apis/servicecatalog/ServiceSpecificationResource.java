@@ -73,7 +73,7 @@ public class ServiceSpecificationResource extends ResourceManagement {
         JsonRepresentation filter = new JsonRepresentation(params);
         return this.getResponse(response, filter);
     }
-    @PostMapping(value = "/serviceSpecification", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
                                     @RequestBody ServiceSpecificationRequest serviceSpecificationRequest)   {

@@ -6,7 +6,7 @@
       "description": "description",
       "toscaModelURL": "toscaModelURL",
       "toscaResourceName": "toscaResourceName",
-      "category": "category",
+      "category": "categories[].name",
       "version": "version",
       "lifecycleStatus":"lifecycleState" ,
       "serviceSpecCharacteristic": {
@@ -40,6 +40,12 @@
       },
        "relatedParty": {
          "0": {
+           "id": ["contactId","lastUpdaterUserId"],
+           "name": "lastUpdaterFullName"
+         }
+       },
+       "relatedParty": {
+         "0": {
            "id": "lastUpdaterUserId",
            "name": "lastUpdaterFullName"
          }
@@ -62,7 +68,12 @@
     "operation": "default",
     "spec": {
       "@type": "ONAPservicespec",
-      "distributionStatus": "DISTRIBUTION_NOT_APPROVED"
+      "distributionStatus": "DISTRIBUTION_NOT_APPROVED",
+      "categories": {
+        "*" : {
+          "name": ""
+        }
+      }
 
     }
   }
