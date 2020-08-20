@@ -1,14 +1,14 @@
 [
   {
     "operation": "shift",
-     "spec": {
+    "spec": {
       "name": "name",
       "description": "description",
       "toscaModelURL": "toscaModelURL",
       "toscaResourceName": "toscaResourceName",
       "category": "categories[].name",
       "version": "version",
-      "lifecycleStatus":"lifecycleState" ,
+      "lifecycleStatus": "lifecycleState",
       "serviceSpecCharacteristic": {
         "*": {
           "name": "properties[&1].name",
@@ -16,53 +16,49 @@
           "valueType": "properties[&1].type",
           "required": "properties[&1].required",
           "serviceSpecCharacteristicValue": {
-            "0": {
-              "value": "properties[&1].value"
+            "*": {
+              "value": "properties[&3].value",
+              "isDefault": {
+                "true": {
+                  "@(2,value)": "properties[&5].defaultValue"
+                }
+              }
             }
           }
         }
       },
-      "attachment" : {
-          "*": {
-            "id": "artifacts[&1].artifactUUID",
-            "name": "artifacts[&1].artifactName",
-            "description": "artifacts[&1].artifactDescription",
-            "artifactLabel": "artifacts[&1].artifactLabel",
-            "artifactGroupType": "artifacts[&1].artifactGroupType",
-            "artifactTimeout": "artifacts[&1].artifactTimeout",
-            "artifactChecksum": "artifacts[&1].artifactChecksum",
-            "artifactVersion": "artifacts[&1].artifactVersion",
-            "generatedFromUUID": "artifacts[&1].generatedFromUUID",
-            "url": "artifacts[&1].artifactURL",
-            "mimeType": "artifacts[&1].artifactType"
-          }
-
+      "attachment": {
+        "*": {
+          "id": "artifacts[&1].artifactUUID",
+          "name": "artifacts[&1].artifactName",
+          "description": "artifacts[&1].artifactDescription",
+          "artifactLabel": "artifacts[&1].artifactLabel",
+          "artifactGroupType": "artifacts[&1].artifactGroupType",
+          "artifactTimeout": "artifacts[&1].artifactTimeout",
+          "artifactChecksum": "artifacts[&1].artifactChecksum",
+          "artifactVersion": "artifacts[&1].artifactVersion",
+          "generatedFromUUID": "artifacts[&1].generatedFromUUID",
+          "url": "artifacts[&1].artifactURL",
+          "mimeType": "artifacts[&1].artifactType"
+        }
       },
-       "relatedParty": {
-         "0": {
-           "id": ["contactId","lastUpdaterUserId"],
-           "name": "lastUpdaterFullName"
-         }
-       },
-       "relatedParty": {
-         "0": {
-           "id": "lastUpdaterUserId",
-           "name": "lastUpdaterFullName"
-         }
-       },
-      "resourceSpecification" : {
-         "*": {
-           "id": "resources[&1].resourceUUID",
-           "version": "resources[&1].resourceVersion",
-           "name": "resources[&1].resourceName",
-           "resourceInstanceName": "resources[&1].resourceInstanceName",
-           "resourceInvariantUUID": "resources[&1].resourceInvariantUUID",
-           "resoucreType": "resources[&1].resourceType"
-
-         }
-
-       }
-     }
+      "relatedParty": {
+        "*": {
+          "id": ["contactId", "lastUpdaterUserId"],
+          "name": "lastUpdaterFullName"
+        }
+      },
+      "resourceSpecification": {
+        "*": {
+          "id": "resources[&1].resourceUUID",
+          "version": "resources[&1].resourceVersion",
+          "name": "resources[&1].resourceName",
+          "resourceInstanceName": "resources[&1].resourceInstanceName",
+          "resourceInvariantUUID": "resources[&1].resourceInvariantUUID",
+          "resoucreType": "resources[&1].resourceType"
+        }
+      }
+    }
   },
   {
     "operation": "default",
@@ -70,11 +66,10 @@
       "@type": "ONAPservicespec",
       "distributionStatus": "DISTRIBUTION_NOT_APPROVED",
       "categories": {
-        "*" : {
+        "*": {
           "name": ""
         }
       }
-
     }
   }
 ]

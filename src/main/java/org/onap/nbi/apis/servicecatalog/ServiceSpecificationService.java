@@ -17,12 +17,16 @@ package org.onap.nbi.apis.servicecatalog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.onap.nbi.apis.servicecatalog.jolt.FindServiceSpecJsonTransformer;
 import org.onap.nbi.apis.servicecatalog.jolt.GetServiceSpecJsonTransformer;
+import org.onap.nbi.apis.servicecatalog.jolt.PostServiceResponseSpecJsonTransformer;
 import org.onap.nbi.apis.servicecatalog.jolt.PostServiceSpecJsonTransformer;
 import org.onap.nbi.apis.servicecatalog.model.ServiceSpecCharacteristicRequest;
 import org.onap.nbi.apis.servicecatalog.model.ServiceSpecificationRequest;
@@ -34,6 +38,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MultiValueMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ServiceSpecificationService {
@@ -47,9 +53,13 @@ public class ServiceSpecificationService {
     @Autowired
     FindServiceSpecJsonTransformer findServiceSpecJsonTransformer;
 
+ // Change for processing POST request
     @Autowired
     PostServiceSpecJsonTransformer postServiceSpecJsonTransformer;
 
+    @Autowired
+    PostServiceResponseSpecJsonTransformer postServiceResponseSpecJsonTransformer ;
+    
     @Autowired
     ToscaInfosProcessor toscaInfosProcessor;
 
@@ -112,7 +122,7 @@ public class ServiceSpecificationService {
         LinkedHashMap specRequestMap = mapper.convertValue(specRequest, LinkedHashMap.class);
         HashMap<Object, Object> serviceCatalogInput = (HashMap) postServiceSpecJsonTransformer.transform(specRequestMap);
 
-        ArrayList<Map<String, String>> propList = (ArrayList)(serviceCatalogInput.get("properties"));
+        /*ArrayList<Map<String, String>> propList = (ArrayList)(serviceCatalogInput.get("properties"));
         propList.stream().map(prop -> (Map<String, String>) prop).forEach((propMap) -> {
             ServiceSpecCharacteristicRequest characteristicRequest =
                     specRequest.getServiceSpecCharacteristic()
@@ -125,13 +135,16 @@ public class ServiceSpecificationService {
                     .stream()
                     .findFirst().get().getValue());
 
-        });
+        });*/
         //Call SDC Post API
         Map sdcResponse = sdcClient.callPost(serviceCatalogInput,userId);
         
         //Transform SDC Response
-        
-        return sdcResponse;
+        LinkedHashMap<Object,Object> serviceCatalogResponse =null;
+        if (!CollectionUtils.isEmpty(sdcResponse)) {
+        	serviceCatalogResponse = (LinkedHashMap)postServiceResponseSpecJsonTransformer.transform(sdcResponse);
+        }
+        return serviceCatalogResponse;
     }
 
 }
