@@ -22,12 +22,15 @@ import java.util.*;
 import org.onap.nbi.OnapComponentsUrlPaths;
 import org.onap.nbi.apis.servicecatalog.model.ServiceSpecificationRequest;
 import org.onap.nbi.commons.JsonRepresentation;
+import org.onap.nbi.commons.Resource;
 import org.onap.nbi.commons.ResourceManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(OnapComponentsUrlPaths.SERVICE_SPECIFICATION_PATH)
@@ -81,7 +84,15 @@ public class ServiceSpecificationResource extends ResourceManagement {
 
         // need to transform SDC response to ServiceSpecificationResponse
 
-        return ResponseEntity.created(URI.create("/")).body(serviceCatalogResponse);
+        return createResponse(serviceCatalogResponse);
     }
+    
+    private ResponseEntity<Object> createResponse(final Map resource) {
+    	
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(resource.get("id"))
+                    .toUri();
 
+        return ResponseEntity.created(location).body(resource);
+
+    }
 }
