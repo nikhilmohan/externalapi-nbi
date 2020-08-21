@@ -20,7 +20,7 @@
       "backgroundColor": "#FFFFFF"
     }
   },
-  "host": "nbi.api.simpledemo.onap.org:30274",
+  "host": "serverRoot:30274",
   "basePath": "/nbi/api/v4",
   "schemes": [
     "http",
@@ -567,6 +567,12 @@
     "ServiceSpecificationRequest": {
       "description": "ServiceSpecification is a class that offers characteristics to describe a type of service. Functionally, it acts as a template by which Services may be instantiated. By sharing the same specification, these services would therefore share the same set of characteristics.",
       "type": "object",
+      "required": [
+        "name",
+        "description",
+        "category",
+        "relatedParty"
+      ],
       "properties": {
         "name": {
           "description": "Name of the service specification",

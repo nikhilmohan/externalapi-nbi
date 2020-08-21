@@ -138,7 +138,7 @@ public class ServiceSpecificationService {
         });*/
         //Call SDC Post API
         Map sdcResponse = sdcClient.callPost(serviceCatalogInput,userId);
-        
+        LOGGER.info("SDC response " + sdcResponse);
         //Transform SDC Response
         LinkedHashMap<Object,Object> serviceCatalogResponse =null;
         if (!CollectionUtils.isEmpty(sdcResponse)) {
