@@ -27,6 +27,7 @@ package org.onap.nbi.apis.servicecatalog.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 /**
@@ -38,6 +39,8 @@ import java.util.Objects;
 
 
 public class RelatedPartyRef {
+
+  @NotEmpty(message = "is missing in the request!")
   private String id = null;
 
   private String role = null;

@@ -27,6 +27,8 @@ package org.onap.nbi.apis.servicecatalog.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,8 +42,11 @@ import java.util.Objects;
 
 
 public class ServiceSpecificationRequest {
+
+  @NotEmpty(message = "is missing in the request!")
   private String name = null;
 
+  @NotEmpty(message = "is missing in the request!")
   private String description = null;
 
   private String type = "ONAPservice";
@@ -54,6 +59,7 @@ public class ServiceSpecificationRequest {
 
   private String toscaResourceName = null;
 
+  @NotEmpty(message = "is missing in the request!")
   private String category = null;
 
   private String subcategory = null;
@@ -66,6 +72,8 @@ public class ServiceSpecificationRequest {
 
   private List<Attachment> attachment = null;
 
+  @NotEmpty(message = "is missing in the request!")
+  @Valid
   private List<RelatedPartyRef> relatedParty = null;
 
   private List<ResourceSpecificationRef> resourceSpecification = null;
