@@ -16,6 +16,10 @@
 
 package org.onap.nbi.exceptions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.onap.nbi.apis.servicecatalog.SdcClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +29,8 @@ import org.springframework.web.client.RestClientException;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     @ExceptionHandler(BackendFunctionalException.class)
     @ResponseBody
@@ -54,6 +60,13 @@ public class ApiExceptionHandler {
     @ResponseBody
     public ResponseEntity<ApiError> validationExceptionHandler(final ValidationException exception) {
         ApiError apiError = new ApiError("400", HttpStatus.BAD_REQUEST.getReasonPhrase(), exception.getMessages(), "");
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    @ResponseBody
+    public ResponseEntity<ApiError> validationExceptionHandler(final JsonProcessingException exception) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.getReasonPhrase(), "Request data is invalid!", "");
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 }

@@ -24,13 +24,18 @@ import org.onap.nbi.apis.servicecatalog.model.ServiceSpecificationRequest;
 import org.onap.nbi.commons.JsonRepresentation;
 import org.onap.nbi.commons.Resource;
 import org.onap.nbi.commons.ResourceManagement;
+import org.onap.nbi.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(OnapComponentsUrlPaths.SERVICE_SPECIFICATION_PATH)
@@ -76,6 +81,20 @@ public class ServiceSpecificationResource extends ResourceManagement {
         JsonRepresentation filter = new JsonRepresentation(params);
         return this.getResponse(response, filter);
     }
+<<<<<<< HEAD
+=======
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
+                                    @Valid @RequestBody ServiceSpecificationRequest serviceSpecificationRequest,
+                                    BindingResult result)   {
+        if (null == userId || userId.isEmpty())    {
+            result.addError(new ObjectError("USER_ID", "USER_ID is missing in header!"));
+        }
+        if(result.hasErrors()){
+            throw new ValidationException(result.getAllErrors());
+        }
+        Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
+>>>>>>> branch 'master' of https://github.com/nikhilmohan/externalapi-nbi.git
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,

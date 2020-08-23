@@ -485,6 +485,11 @@ definitions:
       \ be instantiated. By sharing the same specification, these services would therefore\
       \ share the same set of characteristics."
     type: "object"
+    required:
+      - name
+      - description
+      - category
+      - relatedParty
     properties:
       name:
         description: "Name of the service specification"

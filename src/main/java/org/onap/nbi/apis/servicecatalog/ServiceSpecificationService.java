@@ -128,6 +128,10 @@ public class ServiceSpecificationService {
         HashMap<Object, Object> serviceCatalogInput = (HashMap) postServiceSpecJsonTransformer.transform(specRequestMap);
         //Call SDC Post API
         Map sdcResponse = sdcClient.callPost(serviceCatalogInput,userId);
+<<<<<<< HEAD
+=======
+        LOGGER.info("SDC response " + sdcResponse);
+>>>>>>> branch 'master' of https://github.com/nikhilmohan/externalapi-nbi.git
         //Transform SDC Response
         LinkedHashMap<Object,Object> serviceCatalogResponse =null;
         if (!CollectionUtils.isEmpty(sdcResponse)) {
