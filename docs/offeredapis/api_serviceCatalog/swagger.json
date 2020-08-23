@@ -20,7 +20,7 @@
       "backgroundColor": "#FFFFFF"
     }
   },
-  "host": "serverRoot:30274",
+  "host": "nbi.api.simpledemo.onap.org:30274",
   "basePath": "/nbi/api/v4",
   "schemes": [
     "http",
