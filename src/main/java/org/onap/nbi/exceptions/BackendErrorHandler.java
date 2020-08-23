@@ -19,6 +19,9 @@ package org.onap.nbi.exceptions;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
+import org.onap.nbi.apis.servicecatalog.SdcClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -26,7 +29,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 public class BackendErrorHandler implements ResponseErrorHandler {
 
     private ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BackendErrorHandler.class);
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
         return errorHandler.hasError(response);
@@ -38,6 +41,7 @@ public class BackendErrorHandler implements ResponseErrorHandler {
             String body = null;
             if (response.getBody() != null) {
                 body = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8.name());
+                LOGGER.error("BackendErrorHandler {} error : {}", response.getBody());
             }
 
             throw new BackendFunctionalException(response.getStatusCode(), response.getStatusText(), body);

@@ -116,29 +116,18 @@ public class ServiceSpecificationService {
             return null;
         }
     }
-
+    /**
+     * 
+     * @param userId
+     * @param specRequest
+     * @return
+     */
     public Map create(String userId, ServiceSpecificationRequest specRequest) {
         ObjectMapper mapper = new ObjectMapper();
         LinkedHashMap specRequestMap = mapper.convertValue(specRequest, LinkedHashMap.class);
         HashMap<Object, Object> serviceCatalogInput = (HashMap) postServiceSpecJsonTransformer.transform(specRequestMap);
-
-        /*ArrayList<Map<String, String>> propList = (ArrayList)(serviceCatalogInput.get("properties"));
-        propList.stream().map(prop -> (Map<String, String>) prop).forEach((propMap) -> {
-            ServiceSpecCharacteristicRequest characteristicRequest =
-                    specRequest.getServiceSpecCharacteristic()
-                            .stream()
-                            .filter(serviceSpecCharRequest -> propMap.get("name")
-                                    .equalsIgnoreCase(serviceSpecCharRequest.getName()))
-                            .findAny().get();
-            propMap.put("value", characteristicRequest
-                    .getServiceSpecCharacteristicValue()
-                    .stream()
-                    .findFirst().get().getValue());
-
-        });*/
         //Call SDC Post API
         Map sdcResponse = sdcClient.callPost(serviceCatalogInput,userId);
-        
         //Transform SDC Response
         LinkedHashMap<Object,Object> serviceCatalogResponse =null;
         if (!CollectionUtils.isEmpty(sdcResponse)) {

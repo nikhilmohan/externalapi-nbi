@@ -76,22 +76,21 @@ public class ServiceSpecificationResource extends ResourceManagement {
         JsonRepresentation filter = new JsonRepresentation(params);
         return this.getResponse(response, filter);
     }
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
-                                    @RequestBody ServiceSpecificationRequest serviceSpecificationRequest)   {
-        Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
 
-        // need to transform SDC response to ServiceSpecificationResponse
-
-        return createResponse(serviceCatalogResponse);
-    }
-    
+	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
+			@RequestBody ServiceSpecificationRequest serviceSpecificationRequest) {
+		Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
+		return createResponse(serviceCatalogResponse);
+	}
+    /**
+     * 
+     * @param resource
+     * @return
+     */
     private ResponseEntity<Object> createResponse(final Map resource) {
-    	
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(resource.get("id"))
                     .toUri();
-
         return ResponseEntity.created(location).body(resource);
 
     }

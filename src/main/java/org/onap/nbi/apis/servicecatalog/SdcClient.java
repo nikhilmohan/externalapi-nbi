@@ -218,25 +218,21 @@ public class SdcClient {
 	 * @return
 	 */
 	private ResponseEntity<Object> callSdcForPost(URI callURI, Object obj, String userId) {
-		try {
-			ResponseEntity<Object> response = restTemplate.exchange(callURI, HttpMethod.POST,
-					new HttpEntity<>(obj, buildRequestHeaderForPost(userId)), Object.class);
 
-			if (null == response) {
-				return null;
-			} else {
+		ResponseEntity<Object> response = restTemplate.exchange(callURI, HttpMethod.POST,
+				new HttpEntity<>(obj, buildRequestHeaderForPost(userId)), Object.class);
 
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("response body : {} ", response.getBody().toString());
-				}
-				LOGGER.info("response status : {}", response.getStatusCodeValue());
-				return response;
+		if (null == response) {
+			return null;
+		} else {
+
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("response body : {} ", response.getBody().toString());
 			}
-
-		} catch (BackendFunctionalException | ResourceAccessException e) {
-			LOGGER.error("Error on calling SDC API " + " ," + e.getMessage());
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.info("response status : {}", response.getStatusCodeValue());
+			return response;
 		}
+
 	}
 
 	/**
@@ -249,7 +245,6 @@ public class SdcClient {
 		UriComponentsBuilder callURI = UriComponentsBuilder.fromHttpUrl(sdcFindUrl);
 		ResponseEntity<Object> response = callSdcForPost(callURI.build().encode().toUri(), serviceCatalogObject,
 				userId);
-		// return (List<LinkedHashMap>) response.getBody();
 		return (LinkedHashMap) response.getBody();
 	}
 
