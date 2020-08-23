@@ -81,25 +81,18 @@ public class ServiceSpecificationResource extends ResourceManagement {
         JsonRepresentation filter = new JsonRepresentation(params);
         return this.getResponse(response, filter);
     }
-<<<<<<< HEAD
-=======
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
-                                    @Valid @RequestBody ServiceSpecificationRequest serviceSpecificationRequest,
-                                    BindingResult result)   {
-        if (null == userId || userId.isEmpty())    {
-            result.addError(new ObjectError("USER_ID", "USER_ID is missing in header!"));
-        }
-        if(result.hasErrors()){
-            throw new ValidationException(result.getAllErrors());
-        }
-        Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
->>>>>>> branch 'master' of https://github.com/nikhilmohan/externalapi-nbi.git
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object createServiceSpecification(@RequestHeader(value = "USER_ID", required = true) String userId,
-			@RequestBody ServiceSpecificationRequest serviceSpecificationRequest) {
+			@Valid @RequestBody ServiceSpecificationRequest serviceSpecificationRequest, BindingResult result) {
+		if (null == userId || userId.isEmpty()) {
+			result.addError(new ObjectError("USER_ID", "USER_ID is missing in header!"));
+		}
+		if (result.hasErrors()) {
+			throw new ValidationException(result.getAllErrors());
+		}
 		Map serviceCatalogResponse = serviceSpecificationService.create(userId, serviceSpecificationRequest);
+
 		return createResponse(serviceCatalogResponse);
 	}
     /**
