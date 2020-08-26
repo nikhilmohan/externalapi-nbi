@@ -150,7 +150,7 @@ And match $.serviceSpecCharacteristic ==
   }, {
     "name" : "ipaddress",
     "description" : "ipaddress",
-    "valueType" : "float",
+    "valueType" : "string",
     "required" : true,
     "serviceSpecCharacteristicValue" : [ {
       "value" : "10.244.34.1",

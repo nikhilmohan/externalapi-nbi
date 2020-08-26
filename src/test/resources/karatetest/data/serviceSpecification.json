@@ -178,7 +178,7 @@
       {
         "name": "ipaddress",
         "description": "ipaddress",
-        "valueType": "float",
+        "valueType": "string",
         "@type": "string",
         "@schemaLocation": "string",
         "required": true,

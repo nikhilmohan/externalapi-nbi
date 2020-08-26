@@ -71,7 +71,7 @@
           "defaultValue": true
         },
         {
-          "type": "float",
+          "type": "string",
           "required": true,
           "definition": false,
           "description": "ipaddress",
