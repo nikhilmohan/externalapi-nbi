@@ -1,5 +1,4 @@
 [{
-    // Add a boolean true and false to the document at a known location
     "operation": "default",
     "spec": {
       "ref": {
